@@ -10,10 +10,10 @@ First include `easyCanvas.js` or `easyCanvas.min.js` in your HTML page and then 
 
 ## Options
 
-You can add the `fullscreen` attribute to your easy canvas to make it fill the parent div (or window if the parent is body).
+You can add the `fullscreen` attribute to your easyCanvas to make it fill the parent div (or window if the parent is body).
 ```html
 <easy-canvas fullscreen></easy-canvas>
 ```
 
 ## Final Notes
-Canvas is designed to be simple to use and add little overhead to your project. Feel free to contribute if you like the project :)
+EasyCanvas is designed to be simple to use and add little overhead to your project. Feel free to contribute if you like the project :)

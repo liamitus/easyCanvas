@@ -6,7 +6,7 @@
  *
  * Author:      Liam Howell <liammm@gmail.com>
  * Version:     0.1
- * Since:       01-15-2015
+ * Since:       01-17-2015
  */
 
 var app = angular.module('easyCanvas', []);
@@ -14,7 +14,7 @@ var app = angular.module('easyCanvas', []);
 app.directive('easyCanvas', function () {
     return {
         restrict: 'E',
-        template: '<canvas></canvas>',
+        template: '<canvas fullscreen></canvas>',
         link: function (scope, element, attrs) {
             var type = '2d';
             var context = element[0].firstChild.getContext('2d');

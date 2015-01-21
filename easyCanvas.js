@@ -15,7 +15,8 @@ app.provider('easyCanvas', function EasyCanvasProvider() {
 
     var defaults = this.defaults = {
         context: '2d',
-        appendTo: false
+        appendTo: false,
+        fullscreen: false
     };
 
     this.$get = ['$window', '$document', function($window, $document) {
@@ -29,6 +30,8 @@ app.provider('easyCanvas', function EasyCanvasProvider() {
             // Handles canvas creation and insertion into DOM.
             // Returns canvas selector.
             createCanvasElement: function (options) {
+                var html = '<canvas' + options.fullscreen ? ' fullscreen' : '' +
+                            '></canvas>';
                 $canvas = angular.element('<canvas></canvas>');
                 context = $canvas[0].getContext(options.context);
                 $canvasParent = options.appendTo || $body;

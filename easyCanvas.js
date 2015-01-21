@@ -6,23 +6,78 @@
  *
  * Author:      Liam Howell <liammm@gmail.com>
  * Version:     0.1
- * Since:       01-17-2015
+ * Since:       01-20-2015
  */
 
 var app = angular.module('easyCanvas', []);
 
-app.directive('easyCanvas', function () {
-    return {
-        restrict: 'E',
-        template: '<canvas fullscreen></canvas>',
-        link: function (scope, element, attrs) {
-            var type = '2d';
-            var context = element[0].firstChild.getContext('2d');
+app.provider('easyCanvas', function EasyCanvasProvider() {
 
-        }
+    var defaults = this.defaults = {
+        context: '2d',
+        appendTo: false
     };
+
+    this.$get = ['$window', '$document', function($window, $document) {
+        
+        var $body = $document.find('body');
+        var $canvas = null;
+        var $context = null;
+
+        var privateMethods = {
+
+            // Handles canvas creation and insertion into DOM.
+            // Returns canvas selector.
+            createCanvasElement: function (options) {
+                $canvas = angular.element('<canvas></canvas>')[0];
+                $context = $canvas.getContext(options.context);
+                $canvasParent = options.appendTo || $body;
+                $canvasParent.append($canvas);
+                return $canvas;
+            } 
+        };
+
+        var publicMethods = {
+
+            // Creates a new canvas element and returns it.
+            create: function (options) {
+                var opts = angular.copy(defaults);
+                options = options || {};
+                angular.extend(opts, options);
+                return privateMethods.createCanvasElement(opts);
+            },
+
+            // Calls the given draw function, passing in $context and $canvas.
+            draw: function (drawFunction) {
+                drawFunction($context, $canvas);
+            },
+
+            // Getter for the default values of easyCanvas.
+            getDefaults: function () {
+                return defaults;
+            }
+
+        };
+
+        return publicMethods;
+    }];
+
 });
 
+app.directive('easyCanvas', ['easyCanvas', function (easyCanvas) {
+    return {
+        restrict: 'E',
+        link: function (scope, element, attrs) {
+            var defaults = easyCanvas.getDefaults();
+            easyCanvas.create({
+                context: attrs.context ? attrs.context : defaults.context,
+                appendTo: element
+            });
+        }
+    };
+}]);
+
+// TODO Move this to it's own module.
 app.directive('fullscreen', ['$window', function ($window) {
     return {
         restrict: 'A',

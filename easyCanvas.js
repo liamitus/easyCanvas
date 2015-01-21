@@ -22,15 +22,15 @@ app.provider('easyCanvas', function EasyCanvasProvider() {
         
         var $body = $document.find('body');
         var $canvas = null;
-        var $context = null;
+        var context = null;
 
         var privateMethods = {
 
             // Handles canvas creation and insertion into DOM.
             // Returns canvas selector.
             createCanvasElement: function (options) {
-                $canvas = angular.element('<canvas></canvas>')[0];
-                $context = $canvas.getContext(options.context);
+                $canvas = angular.element('<canvas></canvas>');
+                context = $canvas[0].getContext(options.context);
                 $canvasParent = options.appendTo || $body;
                 $canvasParent.append($canvas);
                 return $canvas;
@@ -49,7 +49,7 @@ app.provider('easyCanvas', function EasyCanvasProvider() {
 
             // Calls the given draw function, passing in $context and $canvas.
             draw: function (drawFunction) {
-                drawFunction($context, $canvas);
+                drawFunction(context, $canvas);
             },
 
             // Getter for the default values of easyCanvas.
